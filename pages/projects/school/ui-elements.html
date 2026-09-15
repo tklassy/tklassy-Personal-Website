@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UI Elements</title>
+    <link rel="stylesheet" href="../../../styles.css" />
+    <!-- This style block defines the full visual system for the UI showcase. -->
+    <style>
+        /* This keeps the page from creating horizontal overflow during responsive layout changes. */
+        body {
+            overflow-x: hidden;
+        }
+
+        .page {
+            min-height: 100vh;
+        }
+
+        .content {
+            padding: 0;
+        }
+
+        .ui-showcase {
+            width: min(1520px, calc(100vw - 140px));
+            margin: 0 auto;
+            padding: 28px 0 80px;
+        }
+
+        .ui-section {
+            background: rgba(21, 26, 23, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 26px;
+            margin-bottom: 24px;
+            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+        }
+
+        .ui-section h2 {
+            font-size: clamp(1.4rem, 2vw, 2.2rem);
+            margin-bottom: 14px;
+        }
+
+        .ui-section p {
+            margin-top: 0;
+        }
+
+        /* The hero section creates a large intro card with layered gradients and a dramatic landing feel. */
+        .hero {
+            position: relative;
+            min-height: 420px;
+            display: flex;
+            align-items: end;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(17, 21, 18, 0.8), rgba(31, 40, 35, 0.5)),
+                radial-gradient(circle at top left, rgba(146, 113, 80, 0.3), transparent 32%),
+                linear-gradient(120deg, #1d2a24, #121615);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 34px 34px;
+            mask-image: radial-gradient(circle at center, black, transparent 78%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+            padding: 36px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(79, 63, 46, 0.8);
+            color: #f8e7d8;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 5rem);
+            margin: 0 0 12px;
+        }
+
+        .chat-fab {
+            position: absolute;
+            right: 28px;
+            bottom: 24px;
+            z-index: 2;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #d8a36f, #8f6846);
+            color: #171a17;
+            font-weight: 800;
+            font-size: 1rem;
+            padding: 16px 28px;
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .chat-fab:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .chat-panel {
+            position: absolute;
+            right: 30px;
+            bottom: 92px;
+            width: min(360px, 82vw);
+            background: rgba(18, 21, 20, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
+            padding: 16px;
+            display: none;
+            z-index: 3;
+        }
+
+        .chat-panel.open {
+            display: block;
+        }
+
+        .chat-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .dot-row {
+            display: flex;
+            gap: 7px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #f1c38a;
+        }
+
+        .chat-bubble {
+            background: rgba(79, 63, 46, 0.7);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin: 8px 0;
+            color: var(--text-primary);
+        }
+
+        .chat-input {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-primary);
+            padding: 12px 14px;
+        }
+
+        .responsive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+        }
+
+        .mini-card {
+            background: linear-gradient(180deg, rgba(37, 45, 40, 0.86), rgba(21, 26, 23, 0.86));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px;
+            min-height: 150px;
+            display: grid;
+            place-items: end start;
+        }
+
+        .mini-card span {
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #e6d7bf;
+        }
+
+        .full-viewport {
+            min-height: 76vh;
+            display: grid;
+            place-items: center;
+            background:
+                radial-gradient(circle at center, rgba(112, 86, 62, 0.32), transparent 30%),
+                linear-gradient(180deg, rgba(18, 20, 19, 0.9), rgba(26, 31, 28, 0.85));
+        }
+
+        .immersive-panel {
+            width: min(100%, 1100px);
+            min-height: 440px;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, rgba(32, 36, 33, 0.95), rgba(18, 20, 19, 0.9));
+            padding: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .immersive-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(214, 163, 112, 0.18), transparent 55%);
+        }
+
+        .immersive-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .pill {
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            font-size: 0.8rem;
+        }
+
+        /* Masonry styling creates the staggered portfolio-like grid with varying card heights. */
+        .masonry-grid {
+            column-count: 4;
+            column-gap: 16px;
+        }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .masonry-item:nth-child(1) {
+            height: 160px;
+        }
+
+        .masonry-item:nth-child(2) {
+            height: 240px;
+        }
+
+        .masonry-item:nth-child(3) {
+            height: 190px;
+        }
+
+        .masonry-item:nth-child(4) {
+            height: 260px;
+        }
+
+        .masonry-item:nth-child(5) {
+            height: 180px;
+        }
+
+        .masonry-item:nth-child(6) {
+            height: 220px;
+        }
+
+        .masonry-visual {
+            height: 100%;
+            background: linear-gradient(135deg, rgba(122, 92, 68, 0.8), rgba(20, 26, 23, 0.7));
+            display: grid;
+            place-items: center;
+            font-size: 2.4rem;
+        }
+
+        .overlay-showcase {
+            position: relative;
+            min-height: 380px;
+            background: linear-gradient(180deg, rgba(18, 20, 19, 0.8), rgba(28, 34, 31, 0.9));
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .overlay-base {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(90, 104, 81, 0.25), rgba(48, 60, 54, 0.55));
+        }
+
+        .floating-layer {
+            position: absolute;
+            right: 8%;
+            top: 10%;
+            width: min(320px, 72%);
+            background: rgba(11, 14, 13, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+        }
+
+        .floating-layer.secondary {
+            left: 8%;
+            right: auto;
+            top: auto;
+            bottom: 12%;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 0.72rem;
+            color: var(--text-primary);
+        }
+
+        .circular-layout {
+            display: grid;
+            place-items: center;
+            min-height: 360px;
+        }
+
+        .ring {
+            position: relative;
+            width: min(70vw, 330px);
+            height: min(70vw, 330px);
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: radial-gradient(circle, rgba(152, 117, 79, 0.32), rgba(18, 20, 19, 0.8) 58%);
+        }
+
+        .ring-center {
+            position: absolute;
+            inset: 50% auto auto 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d5a36d, #8d6d49);
+            color: #171b17;
+            font-weight: 800;
+            display: grid;
+            place-items: center;
+        }
+
+        .orb {
+            position: absolute;
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: rgba(247, 239, 228, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: grid;
+            place-items: center;
+            font-size: 0.76rem;
+            color: var(--text-primary);
+        }
+
+        .orb.one {
+            top: 6%;
+            left: 38%;
+        }
+
+        .orb.two {
+            top: 28%;
+            right: 8%;
+        }
+
+        .orb.three {
+            bottom: 10%;
+            right: 28%;
+        }
+
+        .orb.four {
+            bottom: 10%;
+            left: 12%;
+        }
+
+        .orb.five {
+            top: 25%;
+            left: 6%;
+        }
+
+        /* The canvas region gives the floating tools a freeform workspace to move around in. */
+        .canvas-box {
+            position: relative;
+            min-height: 360px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(18, 20, 19, 0.75), rgba(12, 15, 13, 0.88));
+            overflow: hidden;
+        }
+
+        .tool {
+            position: absolute;
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            color: #f7f3ef;
+            background: linear-gradient(135deg, rgba(105, 79, 55, 0.8), rgba(45, 51, 48, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+            user-select: none;
+            cursor: grab;
+        }
+
+        .tool:active {
+            cursor: grabbing;
+        }
+
+        .tool.l {
+            left: 15%;
+            top: 18%;
+        }
+
+        .tool.t {
+            left: 52%;
+            top: 12%;
+        }
+
+        .tool.p {
+            left: 63%;
+            top: 50%;
+        }
+
+        .tool.c {
+            left: 26%;
+            top: 56%;
+        }
+
+        .panel-dock {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 18px;
+        }
+
+        .dock-window {
+            min-height: 260px;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            background: rgba(15, 18, 17, 0.8);
+            padding: 18px;
+            position: relative;
+        }
+
+        .dock-window::before {
+            content: "";
+            position: absolute;
+            inset: 14px 14px auto 14px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .floating-panel {
+            position: absolute;
+            right: 10px;
+            top: 18px;
+            width: 180px;
+            border-radius: 16px;
+            background: rgba(40, 47, 42, 0.9);
+            border: 1px solid var(--border);
+            padding: 12px;
+            cursor: grab;
+        }
+
+        .floating-panel:active {
+            cursor: grabbing;
+        }
+
+        .hierarchy {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 260px;
+            gap: 18px;
+        }
+
+        .tree-node {
+            background: rgba(40, 47, 42, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 18px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .tree-branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+        }
+
+        .tree-branch::before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            width: 2px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .tree-branch .tree-node {
+            min-width: 100px;
+        }
+
+        .freeform-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+            min-height: 280px;
+        }
+
+        .scatter {
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(119, 89, 63, 0.95), rgba(36, 42, 38, 0.95));
+            padding: 16px;
+            min-height: 120px;
+        }
+
+        .scatter:nth-child(1) {
+            grid-column: 1 / span 4;
+            transform: rotate(-4deg);
+        }
+
+        .scatter:nth-child(2) {
+            grid-column: 5 / span 4;
+            transform: rotate(5deg);
+        }
+
+        .scatter:nth-child(3) {
+            grid-column: 9 / span 4;
+            transform: rotate(-2deg);
+        }
+
+        .scatter:nth-child(4) {
+            grid-column: 3 / span 4;
+            transform: rotate(7deg);
+        }
+
+        .scatter:nth-child(5) {
+            grid-column: 7 / span 6;
+            transform: rotate(-6deg);
+        }
+
+        .infinite-scroll {
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .feed-item {
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            gap: 18px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .feed-thumb {
+            height: 90px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(146, 118, 89, 0.7), rgba(29, 33, 28, 0.8));
+        }
+
+        .ribbon {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+
+        .ribbon-tab {
+            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 12px 18px;
+        }
+
+        .timeline {
+            position: relative;
+            margin-top: 18px;
+            display: grid;
+            gap: 24px;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 52px;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 11px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d7a172, #8d6a46);
+        }
+
+        .parallax-demo {
+            position: relative;
+            min-height: 320px;
+            background: linear-gradient(180deg, rgba(9, 11, 10, 0.5), rgba(24, 30, 25, 0.9));
+            overflow: hidden;
+            border-radius: 26px;
+        }
+
+        .parallax-layer {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12), transparent 20%), radial-gradient(circle at 80% 30%, rgba(147, 117, 88, 0.2), transparent 18%);
+        }
+
+        .parallax-panel {
+            position: absolute;
+            right: 10%;
+            bottom: 12%;
+            width: min(400px, 70%);
+            background: rgba(15, 18, 17, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 22px;
+            padding: 22px;
+        }
+
+        @media (max-width: 980px) {
+            .ui-showcase {
+                width: min(100%, calc(100vw - 30px));
+            }
+
+            .panel-dock {
+                grid-template-columns: 1fr;
+            }
+
+            .masonry-grid {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .ui-showcase {
+                padding-top: 14px;
+            }
+
+            .ui-section {
+                padding: 18px;
+            }
+
+            .hero {
+                min-height: 300px;
+            }
+
+            .hero-content {
+                padding: 18px;
+            }
+
+            .chat-fab {
+                right: 18px;
+                bottom: 18px;
+            }
+
+            .masonry-grid {
+                column-count: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <aside class="sidebar"></aside>
+
+        <main class="content">
+            <div class="ui-showcase">
+                <!-- This hero block acts as the main landing area for the UI component showcase. -->
+                <section class="ui-section hero">
+                    <div class="hero-content">
+                        <div class="hero-tag">COMP 585</div>
+                        <h1>UI Elements</h1>
+                        <p>
+                            A compact design board that explores liquid layouts, floating tools, overlays,
+                            motion systems, hierarchy, and freeform composition in one responsive interface.
+                        </p>
+                    </div>
+
+                    <!-- The floating action button behaves like a pop-out support widget. -->
+                    <button class="chat-fab" type="button">Chat Now</button>
+
+                    <div class="chat-panel" id="chatPanel">
+                        <div class="chat-head">
+                            <strong>Support</strong>
+                            <div class="dot-row">
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="chat-bubble">Hi! Need a quick UI review?</div>
+                        <div class="chat-bubble">We can walk through patterns and flow.</div>
+                        <input class="chat-input" type="text" value="Ask about layouts..." aria-label="Chat input" />
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Liquid / Responsive</h2>
+                    <div class="responsive-grid">
+                        <div class="mini-card"><span>Adaptive</span></div>
+                        <div class="mini-card"><span>Fluid</span></div>
+                        <div class="mini-card"><span>Module</span></div>
+                        <div class="mini-card"><span>Grid</span></div>
+                    </div>
+                </section>
+
+                <section class="ui-section full-viewport">
+                    <div class="immersive-panel">
+                        <div class="immersive-text">
+                            <h2>Full Screen</h2>
+                            <p>Immersive views create focus, depth, and directional clarity.</p>
+                            <div class="pill-row">
+                                <span class="pill">Focus</span>
+                                <span class="pill">Drift</span>
+                                <span class="pill">Flow</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Masonry / Portfolio Grid</h2>
+                    <div class="masonry-grid">
+                        <div class="masonry-item">
+                            <div class="masonry-visual">A</div>
+                        </div>
+                        <div class="masonry-item">
+                            <div class="masonry-visual">B</div>
+                        </div>
+                        <div class="masonry-item">
+                            <div class="masonry-visual">C</div>
+                        </div>
+                        <div class="masonry-item">
+                            <div class="masonry-visual">D</div>
+                        </div>
+                        <div class="masonry-item">
+                            <div class="masonry-visual">E</div>
+                        </div>
+                        <div class="masonry-item">
+                            <div class="masonry-visual">F</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Overlays</h2>
+                    <div class="overlay-showcase">
+                        <div class="overlay-base"></div>
+                        <div class="floating-layer">
+                            <h3>Overlay layer</h3>
+                            <p>Contextual data floating above a primary canvas.</p>
+                            <div class="badge-row">
+                                <span class="badge">Preview</span>
+                                <span class="badge">Action</span>
+                                <span class="badge">Meta</span>
+                            </div>
+                        </div>
+                        <div class="floating-layer secondary">
+                            <h3>Secondary panel</h3>
+                            <p>Lightweight details and quick controls.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Circular</h2>
+                    <div class="circular-layout">
+                        <div class="ring">
+                            <div class="orb one">Map</div>
+                            <div class="orb two">Menu</div>
+                            <div class="orb three">View</div>
+                            <div class="orb four">Tools</div>
+                            <div class="orb five">Data</div>
+                            <div class="ring-center">Core</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Canvas / Free-moving tools</h2>
+                    <div class="canvas-box">
+                        <div class="tool l">L</div>
+                        <div class="tool t">T</div>
+                        <div class="tool p">P</div>
+                        <div class="tool c">C</div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Panels</h2>
+                    <div class="panel-dock">
+                        <div class="dock-window">
+                            <div class="floating-panel">
+                                <strong>Detached panel</strong>
+                                <p>Moves independently from the main workspace.</p>
+                            </div>
+                        </div>
+                        <div class="dock-window">
+                            <h3>Docked tools</h3>
+                            <p>Quick access and contextual actions remain attached.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Hierarchical</h2>
+                    <div class="hierarchy">
+                        <div class="tree-node">System</div>
+                        <div class="tree-branch">
+                            <div class="tree-node">Core</div>
+                            <div class="tree-node">Module</div>
+                        </div>
+                        <div class="tree-branch">
+                            <div class="tree-node">Flow</div>
+                            <div class="tree-node">Signal</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Scattered / Freeform</h2>
+                    <div class="freeform-grid">
+                        <div class="scatter">
+                            <h3>Note</h3>
+                            <p>Loose composition</p>
+                        </div>
+                        <div class="scatter">
+                            <h3>Draft</h3>
+                            <p>Open layout</p>
+                        </div>
+                        <div class="scatter">
+                            <h3>Idea</h3>
+                            <p>Sketchboard</p>
+                        </div>
+                        <div class="scatter">
+                            <h3>Concept</h3>
+                            <p>Brainstorm</p>
+                        </div>
+                        <div class="scatter">
+                            <h3>Storyboard</h3>
+                            <p>Free association</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Infinite Scroll</h2>
+                    <div class="infinite-scroll">
+                        <div class="feed-item">
+                            <div class="feed-thumb"></div>
+                            <div>
+                                <h3>Feed item 01</h3>
+                                <p>Long-form content and visual cards continue vertically without a hard stop.</p>
+                            </div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-thumb"></div>
+                            <div>
+                                <h3>Feed item 02</h3>
+                                <p>Users naturally keep exploring as new blocks continue to appear below.</p>
+                            </div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-thumb"></div>
+                            <div>
+                                <h3>Feed item 03</h3>
+                                <p>Infinite interfaces rely on rhythm, hierarchy, and light visual repetition.</p>
+                            </div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-thumb"></div>
+                            <div>
+                                <h3>Feed item 04</h3>
+                                <p>This creates a continuous stream of content that feels fluid and endless.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Ribbon</h2>
+                    <div class="ribbon">
+                        <div class="ribbon-tab">Overview</div>
+                        <div class="ribbon-tab">Assets</div>
+                        <div class="ribbon-tab">Research</div>
+                        <div class="ribbon-tab">Deliverables</div>
+                        <div class="ribbon-tab">Storyboards</div>
+                        <div class="ribbon-tab">Iterations</div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h3>Phase 01</h3>
+                            <p>Research and competitive analysis.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>Phase 02</h3>
+                            <p>Low-fidelity concept model and interaction tests.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>Phase 03</h3>
+                            <p>Prototype refinement and design validation.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Parallax</h2>
+                    <div class="parallax-demo">
+                        <div class="parallax-layer"></div>
+                        <div class="parallax-panel">
+                            <h3>Depth effect</h3>
+                            <p>Background motion and layered perspective create visual movement.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui-section">
+                    <h2>Fixed Sidebar</h2>
+                    <p>The browser sidebar remains anchored while content scrolls through the workflow.</p>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../../script.js"></script>
+    <script>
+        // This toggles the floating chat panel open and closed when the button is clicked.
+        const fab = document.querySelector('.chat-fab');
+        const panel = document.getElementById('chatPanel');
+        fab.addEventListener('click', () => {
+            panel.classList.toggle('open');
+        });
+
+        // This lets the floating canvas tools and utility panels be dragged around the workspace.
+        const toolNodes = document.querySelectorAll('.tool, .floating-panel');
+        toolNodes.forEach((node) => {
+            let active = false;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            node.addEventListener('pointerdown', (event) => {
+                active = true;
+                node.setPointerCapture(event.pointerId);
+                const rect = node.getBoundingClientRect();
+                offsetX = event.clientX - rect.left;
+                offsetY = event.clientY - rect.top;
+            });
+
+            node.addEventListener('pointermove', (event) => {
+                if (!active) return;
+                const parent = node.parentElement.getBoundingClientRect();
+                const x = Math.min(Math.max(event.clientX - parent.left - offsetX, 0), parent.width - node.offsetWidth);
+                const y = Math.min(Math.max(event.clientY - parent.top - offsetY, 0), parent.height - node.offsetHeight);
+                node.style.left = `${x}px`;
+                node.style.top = `${y}px`;
+                node.style.right = 'auto';
+            });
+
+            node.addEventListener('pointerup', () => {
+                active = false;
+            });
+        });
+    </script>
+</body>
+
+</html>

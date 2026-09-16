@@ -179,6 +179,51 @@ p {
   background: rgba(37, 45, 40, 0.55);
 }
 
+.hero-image {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  display: block;
+  margin: 20px 0 18px;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.image-card {
+  background: rgba(21, 26, 23, 0.82);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.image-card img {
+  display: block;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.image-card .image-content {
+  padding: 16px;
+}
+
+.image-card h3 {
+  margin: 0 0 8px;
+}
+
+.image-card a {
+  color: var(--highlight);
+  text-decoration: none;
+  font-weight: 600;
+}
+
 .menu-toggle {
   display: inline-flex;
   align-items: center;

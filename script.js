@@ -8,6 +8,8 @@ const sidebarLinks = [
   { label: 'Project: 5', target: 'pages/projects/project-5/index.html' }
 ];
 
+const siteRoot = new URL('./', document.currentScript?.src || window.location.href);
+
 function getCurrentPageRelativePath() {
   const fullPath = decodeURI(window.location.pathname);
   const marker = '/tklassy Personal Website/';
@@ -27,41 +29,19 @@ function getCurrentPageRelativePath() {
 }
 
 function buildRelativeHref(target) {
-  const currentRelative = getCurrentPageRelativePath();
-  const currentDir = currentRelative.includes('/')
-    ? currentRelative.substring(0, currentRelative.lastIndexOf('/'))
-    : '';
-  const currentSegments = currentDir ? currentDir.split('/') : [];
-  const targetSegments = target.split('/').filter(Boolean);
-
-  let commonDepth = 0;
-  while (
-    commonDepth < Math.min(currentSegments.length, targetSegments.length) &&
-    currentSegments[commonDepth] === targetSegments[commonDepth]
-  ) {
-    commonDepth += 1;
-  }
-
-  const upCount = currentSegments.length - commonDepth;
-  const downSegments = targetSegments.slice(commonDepth);
-
-  if (upCount === 0) {
-    return downSegments.join('/');
-  }
-
-  const upPrefix = Array(upCount).fill('..').join('/');
-  return `${upPrefix}/${downSegments.join('/')}`;
+  return new URL(target, siteRoot).href;
 }
 
 function isActiveTarget(target) {
-  const currentRelative = getCurrentPageRelativePath();
-  const normalizedTarget = target.replace(/\/+$|index\.html$/i, '');
+  const currentPath = new URL(window.location.href).pathname;
+  const targetPath = new URL(target, siteRoot).pathname;
+  const normalizedTarget = targetPath.replace(/\/+$|index\.html$/i, '');
 
-  if (!normalizedTarget) {
-    return currentRelative === 'index.html';
+  if (target === 'index.html') {
+    return currentPath === targetPath;
   }
 
-  return currentRelative === target || currentRelative.startsWith(normalizedTarget);
+  return currentPath === targetPath || currentPath.startsWith(normalizedTarget);
 }
 
 function renderSidebar() {

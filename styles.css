@@ -180,9 +180,10 @@ p {
 }
 
 .hero-image {
-  width: 100%;
-  max-height: 360px;
-  object-fit: cover;
+  width: min(100%, 720px);
+  height: 280px;
+  object-fit: contain;
+  background: var(--background);
   border-radius: 14px;
   border: 1px solid var(--border);
   display: block;
@@ -191,9 +192,10 @@ p {
 
 .image-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 320px));
   gap: 18px;
   margin-top: 22px;
+  max-width: 680px;
 }
 
 .image-card {
@@ -206,8 +208,9 @@ p {
 .image-card img {
   display: block;
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: 160px;
+  object-fit: contain;
+  background: var(--background);
 }
 
 .image-card .image-content {
